@@ -1,39 +1,3 @@
-// Habitaciones por piso
-
-const habitacionsPorPiso = [10,10,10,10,10,10,10,10,10,5]
-document.write(`
-<div>
-    <img src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">
-</div>
-`)
-
-let habitacionesTotales = habitacionsPorPiso[0]+ habitacionsPorPiso[1] + habitacionsPorPiso[2] + habitacionsPorPiso[3] + habitacionsPorPiso[4] + habitacionsPorPiso[5] + habitacionsPorPiso[6] + habitacionsPorPiso[7] + habitacionsPorPiso[8] + habitacionsPorPiso[9];
-
-if(habitacionesTotales<=0){
-    document.write("No hay disponibilidad de habitaciones en el hotel.");
-}else {
-    document.write("Total de habitaciones en el hotel: " + habitacionesTotales + "<br>" + 
-    "Disponibilidad de habitaciones en el 1er piso: "+ habitacionsPorPiso[0] + "<br>" + 
-    "Disponibilidad de habitaciones en el 2do piso: "+ habitacionsPorPiso[1] + "<br>" + 
-    "Disponibilidad de habitaciones en el 3er piso: "+ habitacionsPorPiso[2] + "<br>" + 
-    "Disponibilidad de habitaciones en el 4to piso: "+ habitacionsPorPiso[3] + "<br>" + 
-    "Disponibilidad de habitaciones en el 5to piso: "+ habitacionsPorPiso[4] + "<br>" + 
-    "Disponibilidad de habitaciones en el 6to piso: "+ habitacionsPorPiso[5] + "<br>" + 
-    "Disponibilidad de habitaciones en el 7to piso: "+ habitacionsPorPiso[6] + "<br>" + 
-    "Disponibilidad de habitaciones en el 8vo piso: "+ habitacionsPorPiso[7] + "<br>" + 
-    "Disponibilidad de habitaciones en el 9no piso: "+ habitacionsPorPiso[8] + "<br>" + 
-    "Disponibilidad de habitaciones en el 10mo piso: "+ habitacionsPorPiso[9] + "<br>"
-    )
-}
-
-function descontarDelPrimerPiso(){
-    if(habitacionsPorPiso[0]<=0){
-        console.log("No quedan habitaciones en éste piso.");
-    }else {
-        habitacionsPorPiso[0] = habitacionsPorPiso[0] -1;
-    }
-}
-
 // Reservando una habitación
 
 class habitacion{
@@ -71,13 +35,102 @@ habitacionTwin.sumaIva();
 habitacionMat.sumaIva();
 habitacionTpl.sumaIva();
 
-// ---------- Venta de habitaciones ----------
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
-habitacionTpl.vender() && habitacionsPorPiso[0].descontarDelPrimerPiso();
+let consulta;
+let respuesta;
+let cantidadMAT = 0;
+let cantidadTWIN = 0;
+let cantidadTPL = 0;
+
+do{
+    consulta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
+    if(consulta == "MAT"){
+        cantidadMAT++;
+        if(habitacionMat.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
+        }else {
+            habitacionMat.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if(consulta == "TWIN"){
+        cantidadTWIN++;
+        if(habitacionTwin.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
+        }else {
+            habitacionTwin.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if(consulta == "TPL"){
+        cantidadTPL++;
+        if(habitacionTpl.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
+        }else {
+            habitacionTpl.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if(consulta != "MAT" || "TWIN" || "TPL"){
+        (alert("Favor de ingresar 'MAT', 'TWIN' o 'TPL' o selecione la opción de 'Cancelar' para salir."))
+    }else(consulta !=confirm)
+}while(respuesta); 
+
+alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
+alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
+alert(`Usted reservó ${cantidadTPL} habitaciones Tpl.`)
+alert("El importe total a abonar es de " + ((cantidadMAT * habitacionMat.sumaIva()) + (cantidadTWIN * habitacionTwin.sumaIva()) + (cantidadTPL * habitacionTpl.sumaIva()) + " finales con iva incluido."))
+
+// Habitaciones por piso
+
+const habitacionesPorPiso = [10,10,10,10,10,10,10,10,10,5]
+habitacionesPorPiso.forEach((habitaciones) => {
+    console.log("Total de habitaciones: " + habitaciones)
+})
+
+document.write(`
+<div>
+    <img src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">
+</div>
+`)
+
+let habitacionesTotales = habitacionesPorPiso[0]+ habitacionesPorPiso[1] + habitacionesPorPiso[2] + habitacionesPorPiso[3] + habitacionesPorPiso[4] + habitacionesPorPiso[5] + habitacionesPorPiso[6] + habitacionesPorPiso[7] + habitacionesPorPiso[8] + habitacionesPorPiso[9];
+
+function calcularPorcentaje() {
+    return habitacionesTotales / habitacionesTotales * 100;
+}
+
+if(habitacionesTotales<=0){
+    document.write("No hay disponibilidad de habitaciones en el hotel.");
+}else {
+    document.write("Total de habitaciones disponibles en el hotel: " + habitacionesTotales + " (" + calcularPorcentaje() + "% de disponibilidad)<br>" + 
+    "Disponibilidad de habitaciones en el 1er piso: "+ habitacionesPorPiso[0] + "<br>" + 
+    "Disponibilidad de habitaciones en el 2do piso: "+ habitacionesPorPiso[1] + "<br>" + 
+    "Disponibilidad de habitaciones en el 3er piso: "+ habitacionesPorPiso[2] + "<br>" + 
+    "Disponibilidad de habitaciones en el 4to piso: "+ habitacionesPorPiso[3] + "<br>" + 
+    "Disponibilidad de habitaciones en el 5to piso: "+ habitacionesPorPiso[4] + "<br>" + 
+    "Disponibilidad de habitaciones en el 6to piso: "+ habitacionesPorPiso[5] + "<br>" + 
+    "Disponibilidad de habitaciones en el 7to piso: "+ habitacionesPorPiso[6] + "<br>" + 
+    "Disponibilidad de habitaciones en el 8vo piso: "+ habitacionesPorPiso[7] + "<br>" + 
+    "Disponibilidad de habitaciones en el 9no piso: "+ habitacionesPorPiso[8] + "<br>" + 
+    "Disponibilidad de habitaciones en el 10mo piso: "+ habitacionesPorPiso[9] + "<br>"
+    )
+}
+
+function descontarDelPrimerPiso(){
+    if(habitacionesPorPiso[0]<=0){
+        console.log("No quedan habitaciones en éste piso.");
+    }else {
+        habitacionesPorPiso[0] = habitacionesPorPiso[0] -1;
+    }
+}
+
+const resultado = habitacionTwin.find((tarifa) => tarifa.precio===6200)
+const resultado2 = habitacionMat.find((tarifa) => tarifa.precio===6500)
+const resultado3 = habitacionTpl.filter((tarifa) => tarifa.precio<=6800)
+
+console.log("Resultado de la búsqueda de la tarifa en habitación Twin: " + resultado)
+console.log("Resultado de la búsqueda de la tarifa en habitación Mat: " + resultado2)
+console.log("Resultado de la búsqueda de la tarifa en habitación Tpl: " + resultado3)
+
+// ---------- Venta de habitaciones ---------- (PRUEBA)
+// habitacionTpl.vender() && habitacionesPorPiso[0].descontarDelPrimerPiso();
 
 // ---------- TWIN ----------
 if(habitacionTwin.cantidad<=0){
