@@ -1,7 +1,7 @@
 // Reservando una habitación
 
 class habitacion{
-    constructor(tipo,cantidad,precio,maximoPersonas){
+    constructor(tipo,cantidad,precio,maximoPersonas){ // Agrergar el piso
         this.tipo =tipo;
         this.cantidad =cantidad;
         this.precio =precio;
@@ -35,15 +35,14 @@ habitacionTwin.sumaIva();
 habitacionMat.sumaIva();
 habitacionTpl.sumaIva();
 
-let consulta;
 let respuesta;
 let cantidadMAT = 0;
 let cantidadTWIN = 0;
 let cantidadTPL = 0;
 
 do{
-    consulta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
-    if(consulta == "MAT"){
+    respuesta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
+    if(respuesta == "MAT"){
         cantidadMAT++;
         if(habitacionMat.cantidad<=0){
             alert("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
@@ -51,7 +50,7 @@ do{
             habitacionMat.vender();
         }
         respuesta = confirm("Quiere reservar otra habitación?")
-    }else if(consulta == "TWIN"){
+    }else if(respuesta == "TWIN"){
         cantidadTWIN++;
         if(habitacionTwin.cantidad<=0){
             alert("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
@@ -59,7 +58,7 @@ do{
             habitacionTwin.vender();
         }
         respuesta = confirm("Quiere reservar otra habitación?")
-    }else if(consulta == "TPL"){
+    }else if(respuesta == "TPL"){
         cantidadTPL++;
         if(habitacionTpl.cantidad<=0){
             alert("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
@@ -67,18 +66,17 @@ do{
             habitacionTpl.vender();
         }
         respuesta = confirm("Quiere reservar otra habitación?")
-    }else if(consulta != "MAT" || "TWIN" || "TPL"){
+    }else if((respuesta !== "MAT" || "TWIN" || "TPL" ) && (respuesta !== null)){
         (alert("Favor de ingresar 'MAT', 'TWIN' o 'TPL' o selecione la opción de 'Cancelar' para salir."))
-    }else(consulta !=confirm)
+    }
 }while(respuesta); 
 
 alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
 alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
 alert(`Usted reservó ${cantidadTPL} habitaciones Tpl.`)
-alert("El importe total a abonar es de " + ((cantidadMAT * habitacionMat.sumaIva()) + (cantidadTWIN * habitacionTwin.sumaIva()) + (cantidadTPL * habitacionTpl.sumaIva()) + " finales con iva incluido."))
+alert("El importe total a abonar es de $" + ((cantidadMAT * habitacionMat.precio) + (cantidadTWIN * habitacionTwin.precio) + (cantidadTPL * habitacionTpl.precio) + " finales con iva incluido."))
 
 // Habitaciones por piso
-
 const habitacionesPorPiso = [10,10,10,10,10,10,10,10,10,5]
 habitacionesPorPiso.forEach((habitaciones) => {
     console.log("Total de habitaciones: " + habitaciones)
@@ -120,14 +118,6 @@ function descontarDelPrimerPiso(){
         habitacionesPorPiso[0] = habitacionesPorPiso[0] -1;
     }
 }
-
-const resultado = habitacionTwin.find((tarifa) => tarifa.precio===6200)
-const resultado2 = habitacionMat.find((tarifa) => tarifa.precio===6500)
-const resultado3 = habitacionTpl.filter((tarifa) => tarifa.precio<=6800)
-
-console.log("Resultado de la búsqueda de la tarifa en habitación Twin: " + resultado)
-console.log("Resultado de la búsqueda de la tarifa en habitación Mat: " + resultado2)
-console.log("Resultado de la búsqueda de la tarifa en habitación Tpl: " + resultado3)
 
 // ---------- Venta de habitaciones ---------- (PRUEBA)
 // habitacionTpl.vender() && habitacionesPorPiso[0].descontarDelPrimerPiso();
@@ -230,3 +220,114 @@ document.write(`
         </div>
     </div>
 `)
+
+// ---------- FUNCIONES ----------
+const salones = [
+    {nombre: "Salón Dalí", precio: 50000, capacidad: 50},
+    {nombre: "Salón Picasso", precio: 80000, capacidad: 80},
+]
+
+const resultado = salones.find((tarifa) => tarifa.precio===50000)
+const resultado2 = salones.find((tarifa) => tarifa.precio===65000)
+const resultado3 = salones.filter((cantidad) => cantidad.capacidad>=60)
+const resultado4 = salones.find((buscar) => buscar.nombre==="Salón Dalí")
+const resultado5 = salones.filter((buscar) => buscar.nombre.includes("Salón Pícasso"))
+const resultado6 = salones.map((busqueda) => busqueda.nombre)
+
+console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado) // me devuelven object object porque?
+console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado2) 
+console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado3) // me devuelven object object porque?
+console.log("Resultado de la búsqueda: " + resultado4) // me devuelven object object porque?
+console.log("Resultado de la búsqueda: " + resultado5) // no me devuelve nada porque?
+console.log("Resultado de la búsqueda: " + resultado6)
+
+// ---------- SALONES ----------
+
+document.write(`
+    <div>
+        <h2>Salones</h2>
+        <h3>Salon Dalí</h3>
+        <img src="images/salon_dali.png" alt="Salón Dalí">
+        <div>
+            <h4>Información del salón</h4>
+            <ul>
+                <li>Capacidad 50 personas</li>
+                <li>150 m2</li>
+            </ul>
+            <h5>Servicios adicionales</h5>
+            <ul>
+                <li>Aire Acondicionado</li>
+                <li>Reflector</li>
+                <li>Microfono</li>
+                <li>Sillas</li>
+                <li>Mesas</li>
+                <li>Podio</li>
+                <li>Teléfono</li>
+                <li>Bar</li>
+                <li>Meseros</li>
+                <li>Wi-Fi</li>
+            </ul>
+            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
+        </div>
+        <h3>Salon Picasso</h3>
+        <img src="images/salon_picasso.png" alt="Salón Picasso">
+        <div>
+            <h4>Información del salón</h4>
+            <ul>
+                <li>Capacidad 80 personas</li>
+                <li>200 m2</li>
+            </ul>
+            <h5>Servicios adicionales</h5>
+            <ul>
+                <li>Aire Acondicionado</li>
+                <li>Reflector</li>
+                <li>Microfono</li>
+                <li>Sillas</li>
+                <li>Mesas</li>
+                <li>Podio</li>
+                <li>Teléfono</li>
+                <li>Bar</li>
+                <li>Meseros</li>
+                <li>Wi-Fi</li>
+            </ul>
+            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
+        </div>
+    </div>
+`)
+
+// ---------- ESPACIOS COMUNES ----------
+document.write(`
+    <div>
+        <h2>Espacios comunes</h2>
+        <h3>Piscina</h3>
+        <img src="images/pileta.png" alt="Pileta">
+        <div>
+            <h5>Servicios adicionales</h5>
+            <ul>
+                <li>Teléfono</li>
+                <li>Bar</li>
+                <li>Meseros</li>
+                <li>Wi-Fi</li>
+                <li>Duchas</li>
+            </ul>
+        </div>
+        <h3>Gimnasio</h3>
+        <img src="images/gimnasio.png" alt="Gimnasio">
+        <div>
+            <h5>Servicios adicionales</h5>
+            <ul>
+            <li>Aire Acondicionado</li>
+            <li>Teléfono</li>
+            <li>Wi-Fi</li>
+            <li>Duchas</li>
+            <li>Televisión</li>
+            </ul>
+        </div>
+    </div>
+`)
+
+// ---------- DOM ----------
+let titulo = document.getElementById("titulo")
+console.log (titulo.innerText) // Prueba
+titulo.innerText = "Hotel Cyan"
+console.log (titulo.innerText) // Prueba
