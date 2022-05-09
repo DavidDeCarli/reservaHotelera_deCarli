@@ -35,6 +35,59 @@ habitacionTwin.sumaIva();
 habitacionMat.sumaIva();
 habitacionTpl.sumaIva();
 
+// Evento //
+
+const monto = document.getElementById("monto");
+const tiempo = document.getElementById("tiempo");
+const interes = document.getElementById("interes");
+const btnCalcular = document.getElementById("btnCalcular");
+const llenarTabla = document.querySelector("#lista-tabla tbody");
+
+btnCalcular.addEventListener("click", () => {
+    calcularCuota(monto.value, interes.value, tiempo.value);
+})
+
+function calcularCuota(monto, interes, tiempo){
+    while(llenarTabla.firstChild){
+        llenarTabla.removeChild(llenarTabla.firstChild);
+    } // no sé porque no me funciona, me podrás ayudar con ésto?
+    let fechas = [];
+    let fechaActual = Date.now();
+    let mes_actual = moment(fechaActual);
+    mes_actual.add(1,"month");
+
+    let pagoInteres=0, pagoCapital =0, cuota=0;
+
+    cuota = monto * (Math.pow(1+interes/100, tiempo)*interes/100)/(Math.pow(1+interes/100, tiempo)-1);
+
+    for (let i=1; i<= tiempo; i++){
+        pagoInteres = parseFloat(monto*(interes/100));
+        pagoCapital = cuota - pagoInteres;
+        monto = parseFloat(monto-pagoCapital);
+
+        //Formato fechas
+        fechas[i] = mes_actual.format("DD-MM-YYYY");
+        mes_actual.add(1,"month");
+
+        const row = document.createElement("tr");
+        row.innerHTML=`
+        <td>${fechas[i]}</td>
+        <td>${cuota.toFixed(2)}</td>
+        <td>${pagoCapital.toFixed(2)}</td>
+        <td>${pagoInteres.toFixed(2)}</td>
+        <td>${monto.toFixed(2)}</td>
+        `;
+        llenarTabla.appendChild(row) // no sé porque no me funciona, me podrás ayudar con ésto?
+    }
+    console.log(cuota);
+}
+
+// ---------- DOM ----------
+let titulo = document.getElementById("titulo")
+console.log (titulo.innerText) // Prueba
+titulo.innerText = "Hotel Cyan"
+console.log (titulo.innerText) // Prueba
+
 let respuesta;
 let cantidadMAT = 0;
 let cantidadTWIN = 0;
@@ -231,14 +284,14 @@ const resultado = salones.find((tarifa) => tarifa.precio===50000)
 const resultado2 = salones.find((tarifa) => tarifa.precio===65000)
 const resultado3 = salones.filter((cantidad) => cantidad.capacidad>=60)
 const resultado4 = salones.find((buscar) => buscar.nombre==="Salón Dalí")
-const resultado5 = salones.filter((buscar) => buscar.nombre.includes("Salón Pícasso"))
+const resultado5 = salones.filter((buscar) => buscar.nombre.includes("Salón Picasso"))
 const resultado6 = salones.map((busqueda) => busqueda.nombre)
 
-console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado) // me devuelven object object porque?
+console.log(resultado) // me devuelven object object porque?
 console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado2) 
 console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado3) // me devuelven object object porque?
 console.log("Resultado de la búsqueda: " + resultado4) // me devuelven object object porque?
-console.log("Resultado de la búsqueda: " + resultado5) // no me devuelve nada porque?
+console.log(resultado5) // no me devuelve nada porque?
 console.log("Resultado de la búsqueda: " + resultado6)
 
 // ---------- SALONES ----------
@@ -325,9 +378,3 @@ document.write(`
         </div>
     </div>
 `)
-
-// ---------- DOM ----------
-let titulo = document.getElementById("titulo")
-console.log (titulo.innerText) // Prueba
-titulo.innerText = "Hotel Cyan"
-console.log (titulo.innerText) // Prueba
