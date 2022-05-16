@@ -1,3 +1,9 @@
+// Bienvenida
+
+
+
+
+
 // Reservando una habitación
 
 class habitacion{
@@ -50,7 +56,7 @@ btnCalcular.addEventListener("click", () => {
 function calcularCuota(monto, interes, tiempo){
     while(llenarTabla.firstChild){
         llenarTabla.removeChild(llenarTabla.firstChild);
-    } // no sé porque no me funciona, me podrás ayudar con ésto?
+    }
     let fechas = [];
     let fechaActual = Date.now();
     let mes_actual = moment(fechaActual);
@@ -77,7 +83,7 @@ function calcularCuota(monto, interes, tiempo){
         <td>${pagoInteres.toFixed(2)}</td>
         <td>${monto.toFixed(2)}</td>
         `;
-        llenarTabla.appendChild(row) // no sé porque no me funciona, me podrás ayudar con ésto?
+        llenarTabla.appendChild(row)
     }
     console.log(cuota);
 }
@@ -135,22 +141,18 @@ habitacionesPorPiso.forEach((habitaciones) => {
     console.log("Total de habitaciones: " + habitaciones)
 })
 
-document.write(`
-<div>
-    <img src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">
-</div>
-`)
-
 let habitacionesTotales = habitacionesPorPiso[0]+ habitacionesPorPiso[1] + habitacionesPorPiso[2] + habitacionesPorPiso[3] + habitacionesPorPiso[4] + habitacionesPorPiso[5] + habitacionesPorPiso[6] + habitacionesPorPiso[7] + habitacionesPorPiso[8] + habitacionesPorPiso[9];
 
 function calcularPorcentaje() {
-    return habitacionesTotales / habitacionesTotales * 100;
+    return habitacionesTotales / habitacionesTotales * 100; //corregir
 }
 
+let disponibilidadEnGeneral = document.getElementById("disponibilidadGeneral") 
+
 if(habitacionesTotales<=0){
-    document.write("No hay disponibilidad de habitaciones en el hotel.");
+    disponibilidadEnGeneral.innerHTML=("No hay disponibilidad de habitaciones en el hotel.");
 }else {
-    document.write("Total de habitaciones disponibles en el hotel: " + habitacionesTotales + " (" + calcularPorcentaje() + "% de disponibilidad)<br>" + 
+    disponibilidadEnGeneral.innerHTML=("Total de habitaciones disponibles en el hotel: " + habitacionesTotales + " (" + calcularPorcentaje() + "% de disponibilidad)<br>" + 
     "Disponibilidad de habitaciones en el 1er piso: "+ habitacionesPorPiso[0] + "<br>" + 
     "Disponibilidad de habitaciones en el 2do piso: "+ habitacionesPorPiso[1] + "<br>" + 
     "Disponibilidad de habitaciones en el 3er piso: "+ habitacionesPorPiso[2] + "<br>" + 
@@ -176,12 +178,14 @@ function descontarDelPrimerPiso(){
 // habitacionTpl.vender() && habitacionesPorPiso[0].descontarDelPrimerPiso();
 
 // ---------- TWIN ----------
+let divTwin = document.getElementById("twin") 
+
 if(habitacionTwin.cantidad<=0){
-    document.write("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
+    divTwin.innerHTML=("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
 }else {
-    document.write("Disponibilidad de habitación "+ habitacionTwin.tipo + " " + habitacionTwin.cantidad + " con una tarifa de $" + habitacionTwin.precio + " finales, hasta un máximo de " + habitacionTwin.maximoPersonas + " personas. Incluye el desayuno.<br>")
+    divTwin.innerHTML=("Disponibilidad de habitación "+ habitacionTwin.tipo + " " + habitacionTwin.cantidad + " con una tarifa de $" + habitacionTwin.precio + " finales, hasta un máximo de " + habitacionTwin.maximoPersonas + " personas. Incluye el desayuno.<br>")
 }
-document.write(`
+divTwin.innerHTML=(`
     <div>
         <img src="images/twin.jpg" alt="Habitación Twin">
         <div>
@@ -209,12 +213,15 @@ document.write(`
 `)
 
 // ---------- MAT ----------
+
+let divMat = document.getElementById("mat") 
+
 if(habitacionMat.cantidad<=0){
-    document.write("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
+    divMat.innerHTML=("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
 }else {
-    document.write("Disponibilidad de habitación "+ habitacionMat.tipo + " " + habitacionMat.cantidad + " con una tarifa de $" + habitacionMat.precio + " finales, hasta un máximo de " + habitacionMat.maximoPersonas + " personas. Incluye el desayuno.<br>")
+    divMat.innerHTML=("Disponibilidad de habitación "+ habitacionMat.tipo + " " + habitacionMat.cantidad + " con una tarifa de $" + habitacionMat.precio + " finales, hasta un máximo de " + habitacionMat.maximoPersonas + " personas. Incluye el desayuno.<br>")
 }
-document.write(`
+divMat.innerHTML=(`
     <div>
         <img src="images/mat.jpg" alt="Habitación matrimonial">
         <div>
@@ -242,12 +249,15 @@ document.write(`
 `)
 
 // ---------- TPL ----------
+
+let divTpl = document.getElementById("tpl") 
+
 if(habitacionTpl.cantidad<=0){
-    document.write("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
+    divTpl.innerHTML=("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
 }else {
-    document.write("Disponibilidad de habitación "+ habitacionTpl.tipo + " " + habitacionTpl.cantidad + " con una tarifa de $" + habitacionTpl.precio + " finales, hasta un máximo de " + habitacionTpl.maximoPersonas + " personas. Incluye el desayuno.<br>")
+    divTpl.innerHTML=("Disponibilidad de habitación "+ habitacionTpl.tipo + " " + habitacionTpl.cantidad + " con una tarifa de $" + habitacionTpl.precio + " finales, hasta un máximo de " + habitacionTpl.maximoPersonas + " personas. Incluye el desayuno.<br>")
 }
-document.write(`
+divTpl.innerHTML=(`
     <div>
         <img src="images/mat.jpg" alt="Habitación matrimonial">
         <div>
@@ -281,100 +291,13 @@ const salones = [
 ]
 
 const resultado = salones.find((tarifa) => tarifa.precio===50000)
-const resultado2 = salones.find((tarifa) => tarifa.precio===65000)
-const resultado3 = salones.filter((cantidad) => cantidad.capacidad>=60)
-const resultado4 = salones.find((buscar) => buscar.nombre==="Salón Dalí")
-const resultado5 = salones.filter((buscar) => buscar.nombre.includes("Salón Picasso"))
-const resultado6 = salones.map((busqueda) => busqueda.nombre)
+const resultado2 = salones.filter((cantidad) => cantidad.capacidad>=60)
+const resultado3 = salones.find((buscar) => buscar.nombre==="Salón Dalí")
+const resultado4 = salones.filter((buscar) => buscar.nombre.includes("Salón Picasso"))
+const resultado5 = salones.map((busqueda) => busqueda.nombre)
 
-console.log(resultado) // me devuelven object object porque?
-console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado2) 
-console.log("Resultado de la búsqueda de la tarifa en salones: " + resultado3) // me devuelven object object porque?
-console.log("Resultado de la búsqueda: " + resultado4) // me devuelven object object porque?
-console.log(resultado5) // no me devuelve nada porque?
-console.log("Resultado de la búsqueda: " + resultado6)
-
-// ---------- SALONES ----------
-
-document.write(`
-    <div>
-        <h2>Salones</h2>
-        <h3>Salon Dalí</h3>
-        <img src="images/salon_dali.png" alt="Salón Dalí">
-        <div>
-            <h4>Información del salón</h4>
-            <ul>
-                <li>Capacidad 50 personas</li>
-                <li>150 m2</li>
-            </ul>
-            <h5>Servicios adicionales</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Reflector</li>
-                <li>Microfono</li>
-                <li>Sillas</li>
-                <li>Mesas</li>
-                <li>Podio</li>
-                <li>Teléfono</li>
-                <li>Bar</li>
-                <li>Meseros</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-        <h3>Salon Picasso</h3>
-        <img src="images/salon_picasso.png" alt="Salón Picasso">
-        <div>
-            <h4>Información del salón</h4>
-            <ul>
-                <li>Capacidad 80 personas</li>
-                <li>200 m2</li>
-            </ul>
-            <h5>Servicios adicionales</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Reflector</li>
-                <li>Microfono</li>
-                <li>Sillas</li>
-                <li>Mesas</li>
-                <li>Podio</li>
-                <li>Teléfono</li>
-                <li>Bar</li>
-                <li>Meseros</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
-// ---------- ESPACIOS COMUNES ----------
-document.write(`
-    <div>
-        <h2>Espacios comunes</h2>
-        <h3>Piscina</h3>
-        <img src="images/pileta.png" alt="Pileta">
-        <div>
-            <h5>Servicios adicionales</h5>
-            <ul>
-                <li>Teléfono</li>
-                <li>Bar</li>
-                <li>Meseros</li>
-                <li>Wi-Fi</li>
-                <li>Duchas</li>
-            </ul>
-        </div>
-        <h3>Gimnasio</h3>
-        <img src="images/gimnasio.png" alt="Gimnasio">
-        <div>
-            <h5>Servicios adicionales</h5>
-            <ul>
-            <li>Aire Acondicionado</li>
-            <li>Teléfono</li>
-            <li>Wi-Fi</li>
-            <li>Duchas</li>
-            <li>Televisión</li>
-            </ul>
-        </div>
-    </div>
-`)
+console.log("Resultado de la búsqueda: " + JSON.stringify(resultado)) //se convirtio un objeto en string para agregarlo a la cadena
+console.log(resultado2)
+console.log(resultado3)
+console.log(resultado4)
+console.log("Resultado de la búsqueda: " + resultado5)
