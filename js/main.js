@@ -1,6 +1,37 @@
 // Bienvenida
 
+let nombre = prompt("Favor ingrese su nombre");
 
+function saludar(){
+    if ((nombre == null) || (nombre != confirm)) // si pongo cancelar me trae el nombre de "null" como lo puedo corregir?
+    document.getElementById("bienvenida").innerHTML ="Bienvenido/a";
+    else(nombre !=null)
+    document.getElementById("bienvenida").innerHTML ="Bienvenido/a " + nombre;
+}
+
+saludar()
+
+// Registro o buscador de huespedes
+
+addEventListener('load', inicio, false);
+
+function inicio() {
+    document.getElementById('guardar').addEventListener('click', guardar, false);
+    document.getElementById('buscador').addEventListener('click', recuperar, false);
+}
+
+function guardar(evt) {
+    localStorage.setItem(document.getElementById('buscar').value, document.getElementById('ingresar').value);        
+    document.getElementById('buscar').value='';
+    document.getElementById('ingresar').value='';
+}
+
+function recuperar(evt) {
+    if (localStorage.getItem(document.getElementById('buscar').value) == null) 
+        alert('No está almacenala la palabra '+document.getElementById('buscar').value);
+    else  
+        document.getElementById('ingresar').value=localStorage.getItem(document.getElementById('buscar').value);
+}
 
 
 
