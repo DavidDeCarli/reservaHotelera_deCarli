@@ -1,3 +1,9 @@
+// Operador Ternario
+
+let miEdad = prompt("Favor ingrese su edad");
+let mayorEdad = (miEdad >= 18) ? alert("Sos mayor de edad, podes reservar sin problemas") : (alert("No eres mayor de edad no puedes hacer una reserva") && window.stop());
+//como hago acá para cortar la carga de la pantalla cuando es menor de edad?
+
 // Bienvenida
 
 let nombre = prompt("Favor ingrese su nombre");
@@ -33,8 +39,6 @@ function recuperar(evt) {
         document.getElementById('ingresar').value=localStorage.getItem(document.getElementById('buscar').value);
 }
 
-
-
 // Reservando una habitación
 
 class habitacion{
@@ -66,11 +70,6 @@ console.dir(habitacionMat)
 
 const habitacionTpl = new habitacion("TPL",5,7500,3)
 console.dir(habitacionTpl)
-
-// ---------- suma del IVA ----------
-habitacionTwin.sumaIva();
-habitacionMat.sumaIva();
-habitacionTpl.sumaIva();
 
 // Evento //
 
@@ -332,3 +331,21 @@ console.log(resultado2)
 console.log(resultado3)
 console.log(resultado4)
 console.log("Resultado de la búsqueda: " + resultado5)
+
+//------------------- Desestructuración en Array
+
+// omito la primera posición
+const [, a] = salones
+
+console.log(a) // "Salón Picasso"
+
+//-------------------  spread ... del array
+console.log(...salones) // "Salón Picasso"
+
+// spread del array en un objeto
+const salonesEnum = {
+    ...salones
+}
+
+console.log(salonesEnum)
+// { '0': 'Juan', '1': 'Julieta', '2': 'Carlos', '3': 'Mariela' }
