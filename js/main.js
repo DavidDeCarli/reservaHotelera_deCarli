@@ -1,3 +1,97 @@
+// promesa y libreria
+
+(async() => {
+    const {value: pais} = await Swal.fire({
+        title: "Bienvenido!",
+        text: "Selecciona tu nacionalidad: ",
+        // html: '<b class="rojo">Hola!</b>',
+        icon: "Success", // "error", "warning", "info", "question"
+        confirmButtonText: "Seleccionar",
+        footer: '<span class="rojo">Ésta es información importante!',
+        width: "80%",
+        padding: "1rem",
+        // background: "#000",
+        grow: "row", // "fullscreen", "column"
+        backdrop: true,
+        // timer: 5000,
+        // timerProgressBar: true,
+        toast: false,
+        position: "center",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        stopKeydownPropagation: false,
+        input: "select",
+        inputPlaceholder: "País",
+        inputValue: "",
+        inputOptions: {
+            argentina: "Argentina",
+            mexico: "México",
+            españa: "España",
+            peru: "Perú",
+            uruguay: "Uruguay",
+            brasil: "Brasil",
+            bolivia: "Bolivia"
+        },
+        // customClass: {
+        //     popup: "popupClass"
+        // }
+        showConfirmButton: true,
+        confirmButtonColor: "#3E60E9",
+        confirmButtonAriaLabel: "Confirmar",
+
+        showCancelButton: false,
+        cancelButtonText: "Cancelar",
+        cancelButtonColor: "",
+        cancelButtonAriaLabel: "Cancelar",
+
+        buttonsStyling: true,
+        showCloseButton: true,
+        cloaseButtonAriaLabel: "Cerrar Alerta",
+
+        imageUrl: "images/cyan_logo.png",
+        imageWidth: "120px",
+        // imageHeight: "",
+        imageAlt: "Logo de Hoteles Cyan"
+    });
+    if(pais){
+        Swal.fire({
+            title: `Seleccionaste ${pais}`
+        });
+    }
+} )()
+
+
+// publicidad
+
+// Swal.fire({
+//     title: "reserva tu Hotel",
+//     html: "<a href='index.html' class='boton'>Reservar ahora</a>",
+//     icon: undefined,
+//     footer: "Anuncio",
+//     width: "300px",
+//     padding: "1rem",
+//     background: "#fff",
+//     grow: false,
+//     backdrop: false,
+//     timer: 20000,
+//     timerProgressBar: true,
+//     toast: false,
+//     position: "bottom-end",
+//     allowOutsideClick: false,
+//     allowEscapeKey: false,
+//     stopKeydownPropagation: false,
+//     showConfirmButton: false,
+//     showCancelButton: true,
+//     cloaseButtonAriaLabel: "Cerrar anuncio",
+//     imageUrl: "images/hotelCyan.png",
+//     imageWidth: "100%",
+//     imageAlt: "Vista de la entrada del hotel"
+// });
+
+
+
+
 // Operador Ternario
 
 let miEdad = prompt("Favor ingrese su edad");
@@ -15,7 +109,7 @@ function saludar(){
     document.getElementById("bienvenida").innerHTML ="Bienvenido/a " + nombre;
 }
 
-saludar()
+saludar();
 
 // Registro o buscador de huespedes
 
