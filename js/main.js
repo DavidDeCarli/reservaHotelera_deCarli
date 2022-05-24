@@ -7,7 +7,7 @@
         // html: '<b class="rojo">Hola!</b>',
         icon: "Success", // "error", "warning", "info", "question"
         confirmButtonText: "Seleccionar",
-        footer: '<span class="rojo">Ésta es información importante!',
+        footer: '<span class="rojo">Selecciona tu nacionalidad para poder continuar!',
         width: "80%",
         padding: "1rem",
         // background: "#000",
@@ -89,7 +89,26 @@
 //     imageAlt: "Vista de la entrada del hotel"
 // });
 
+// Terminos y condiciones
 
+// Swal.fire({
+//     html: "Por favor acepte nuestros <a href='#' class='boton'>Términos y condiciones</a>",
+//     confirmButtonText: "Acepto",
+//     icon: "info",
+//     padding: "1rem",
+//     backdrop: true,
+//     toast: true,
+//     position: "bottom",
+//     allowOutsideClick: false,
+//     allowEscapeKey: false,
+//     stopKeydownPropagation: false,
+//     showConfirmButton: true,
+//     showCancelButton: false,
+//     cloaseButtonAriaLabel: "Cerrar ésta alerta",
+//     customClass:{
+//          content: "contentClass"
+//     }
+// });
 
 
 // Operador Ternario
