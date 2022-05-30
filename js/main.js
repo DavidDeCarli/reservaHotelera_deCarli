@@ -1,20 +1,18 @@
 // promesa y libreria
 
+var habitaciones;
+
 (async() => {
     const {value: pais} = await Swal.fire({
         title: "Bienvenido!",
         text: "Selecciona tu nacionalidad: ",
-        // html: '<b class="rojo">Hola!</b>',
         icon: "Success", // "error", "warning", "info", "question"
         confirmButtonText: "Seleccionar",
         footer: '<span class="rojo">Selecciona tu nacionalidad para poder continuar!',
         width: "80%",
         padding: "1rem",
-        // background: "#000",
         grow: "row", // "fullscreen", "column"
         backdrop: true,
-        // timer: 5000,
-        // timerProgressBar: true,
         toast: false,
         position: "center",
         allowOutsideClick: false,
@@ -33,9 +31,6 @@
             brasil: "Brasil",
             bolivia: "Bolivia"
         },
-        // customClass: {
-        //     popup: "popupClass"
-        // }
         showConfirmButton: true,
         confirmButtonColor: "#3E60E9",
         confirmButtonAriaLabel: "Confirmar",
@@ -51,7 +46,6 @@
 
         imageUrl: "images/cyan_logo.png",
         imageWidth: "120px",
-        // imageHeight: "",
         imageAlt: "Logo de Hoteles Cyan"
     });
     if(pais){
@@ -60,7 +54,6 @@
         });
     }
 } )()
-
 
 // publicidad
 
@@ -110,25 +103,176 @@
 //     }
 // });
 
-
 // Operador Ternario
+document.getElementById("guardar").addEventListener("click",()=>{
+    let miEdad = document.getElementById("edad").value;
+    let nombre = document.getElementById("nombre").value;
+    var tipo_habitaciones = document.getElementById("tipo_habitacion").value;
+    console.log(tipo_habitaciones)
+    let disponibilidad = 0;
+    let precio = 0;
+    let cantidad_personas = 0;
+    let mayorEdad = (miEdad >= 18) ? alert("Sos mayor de edad, podes reservar sin problemas") : (alert("No eres mayor de edad no puedes hacer una reserva") && window.stop());
+    function saludar(){
+        if ((nombre == null) || (nombre != confirm))
+        document.getElementById("bienvenida").innerHTML ="Bienvenido/a";
+        else(nombre !=null)
+        document.getElementById("bienvenida").innerHTML ="Bienvenido/a " + nombre;
+    }
 
-let miEdad = prompt("Favor ingrese su edad");
-let mayorEdad = (miEdad >= 18) ? alert("Sos mayor de edad, podes reservar sin problemas") : (alert("No eres mayor de edad no puedes hacer una reserva") && window.stop());
-//como hago acá para cortar la carga de la pantalla cuando es menor de edad?
+    saludar();
+    switch(tipo_habitaciones){
+        case "TWIN" : precio = 6200; disponibilidad = 50; cantidad_personas=2; break;
+        case "MAT" : precio = 6500; disponibilidad = 40; cantidad_personas=2; break;
+        case "TPL" : precio = 7500; disponibilidad = 5; cantidad_personas=3; break;
+    }
+habitaciones = new habitacion(tipo_habitaciones,disponibilidad,precio,cantidad_personas)
+console.dir(habitaciones)
 
-// Bienvenida
+do{
+    respuesta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
+    if(respuesta == "MAT"){
+        cantidadMAT++;
+        if(habitaciones.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+        }else {
+            habitaciones.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if(respuesta == "TWIN"){
+        cantidadTWIN++;
+        if(habitaciones.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+        }else {
+            habitaciones.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if(respuesta == "TPL"){
+        cantidadTPL++;
+        if(habitaciones.cantidad<=0){
+            alert("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+        }else {
+            habitaciones.vender();
+        }
+        respuesta = confirm("Quiere reservar otra habitación?")
+    }else if((respuesta !== "MAT" || "TWIN" || "TPL" ) && (respuesta !== null)){
+        (alert("Favor de ingresar 'MAT', 'TWIN' o 'TPL' o selecione la opción de 'Cancelar' para salir."))
+    }
+}while(respuesta); 
 
-let nombre = prompt("Favor ingrese su nombre");
+alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
+alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
+alert(`Usted reservó ${cantidadTPL} habitaciones Tpl.`)
+alert("El importe total a abonar es de $" + ((cantidadMAT * habitaciones.precio) + (cantidadTWIN * habitaciones.precio) + (cantidadTPL * habitaciones.precio) + " finales con iva incluido."))
 
-function saludar(){
-    if ((nombre == null) || (nombre != confirm)) // si pongo cancelar me trae el nombre de "null" como lo puedo corregir?
-    document.getElementById("bienvenida").innerHTML ="Bienvenido/a";
-    else(nombre !=null)
-    document.getElementById("bienvenida").innerHTML ="Bienvenido/a " + nombre;
+// ---------- TWIN ----------
+let divTwin = document.getElementById("twin") 
+
+if(habitaciones.cantidad<=0){
+    divTwin.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+}else {
+    divTwin.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
 }
+divTwin.innerHTML=(`
+    <div>
+        <img src="images/twin.jpg" alt="Habitación Twin">
+        <div>
+            <h4>Habitación TWIN</h4>
+            <h5>Información de la habitación</h5>
+            <ul>
+                <li>2 personas</li>
+                <li>2 Camas individuales</li>
+                <li>30 m2 / 323 ft2</li>
+            </ul>
+            <h5>Servicios de la habitación</h5>
+            <ul>
+                <li>Aire Acondicionado</li>
+                <li>Bañera</li>
+                <li>Escritorio</li>
+                <li>Secador de Pelo</li>
+                <li>Ducha</li>
+                <li>Teléfono</li>
+                <li>Televisión</li>
+                <li>Wi-Fi</li>
+            </ul>
+            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
+        </div>
+    </div>
+`)
 
-saludar();
+// ---------- MAT ----------
+
+let divMat = document.getElementById("mat") 
+
+if(habitaciones.cantidad<=0){
+    divMat.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+}else {
+    divMat.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
+}
+divMat.innerHTML=(`
+    <div>
+        <img src="images/mat.jpg" alt="Habitación matrimonial">
+        <div>
+            <h4>Habitación MAT</h4>
+            <h5>Información de la habitación</h5>
+            <ul>
+                <li>2 personas</li>
+                <li>1 Cama matrimonial</li>
+                <li>30 m2 / 323 ft2</li>
+            </ul>
+            <h5>Servicios de la habitación</h5>
+            <ul>
+                <li>Aire Acondicionado</li>
+                <li>Bañera</li>
+                <li>Escritorio</li>
+                <li>Secador de Pelo</li>
+                <li>Ducha</li>
+                <li>Teléfono</li>
+                <li>Televisión</li>
+                <li>Wi-Fi</li>
+            </ul>
+            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
+        </div>
+    </div>
+`)
+
+// ---------- TPL ----------
+
+let divTpl = document.getElementById("tpl") 
+
+if(habitaciones.cantidad<=0){
+    divTpl.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
+}else {
+    divTpl.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
+}
+divTpl.innerHTML=(`
+    <div>
+        <img src="images/mat.jpg" alt="Habitación matrimonial">
+        <div>
+            <h4>Habitación TPL</h4>
+            <h5>Información de la habitación</h5>
+            <ul>
+                <li>3 personas</li>
+                <li>1 Cama matrimonial o 2 camas individuales + 1 cama individual</li>
+                <li>30 m2 / 323 ft2</li>
+            </ul>
+            <h5>Servicios de la habitación</h5>
+            <ul>
+                <li>Aire Acondicionado</li>
+                <li>Bañera</li>
+                <li>Escritorio</li>
+                <li>Secador de Pelo</li>
+                <li>Ducha</li>
+                <li>Teléfono</li>
+                <li>Televisión</li>
+                <li>Wi-Fi</li>
+            </ul>
+            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
+        </div>
+    </div>
+`)
+
+})
 
 // Registro o buscador de huespedes
 
@@ -175,14 +319,6 @@ class habitacion{
     }
 }
 
-const habitacionTwin = new habitacion("TWIN",50,6200,2)
-console.dir(habitacionTwin)
-
-const habitacionMat = new habitacion("MAT",40,6500,2)
-console.dir(habitacionMat)
-
-const habitacionTpl = new habitacion("TPL",5,7500,3)
-console.dir(habitacionTpl)
 
 // Evento //
 
@@ -242,42 +378,6 @@ let cantidadMAT = 0;
 let cantidadTWIN = 0;
 let cantidadTPL = 0;
 
-do{
-    respuesta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
-    if(respuesta == "MAT"){
-        cantidadMAT++;
-        if(habitacionMat.cantidad<=0){
-            alert("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
-        }else {
-            habitacionMat.vender();
-        }
-        respuesta = confirm("Quiere reservar otra habitación?")
-    }else if(respuesta == "TWIN"){
-        cantidadTWIN++;
-        if(habitacionTwin.cantidad<=0){
-            alert("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
-        }else {
-            habitacionTwin.vender();
-        }
-        respuesta = confirm("Quiere reservar otra habitación?")
-    }else if(respuesta == "TPL"){
-        cantidadTPL++;
-        if(habitacionTpl.cantidad<=0){
-            alert("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
-        }else {
-            habitacionTpl.vender();
-        }
-        respuesta = confirm("Quiere reservar otra habitación?")
-    }else if((respuesta !== "MAT" || "TWIN" || "TPL" ) && (respuesta !== null)){
-        (alert("Favor de ingresar 'MAT', 'TWIN' o 'TPL' o selecione la opción de 'Cancelar' para salir."))
-    }
-}while(respuesta); 
-
-alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
-alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
-alert(`Usted reservó ${cantidadTPL} habitaciones Tpl.`)
-alert("El importe total a abonar es de $" + ((cantidadMAT * habitacionMat.precio) + (cantidadTWIN * habitacionTwin.precio) + (cantidadTPL * habitacionTpl.precio) + " finales con iva incluido."))
-
 // Habitaciones por piso
 const habitacionesPorPiso = [10,10,10,10,10,10,10,10,10,5]
 habitacionesPorPiso.forEach((habitaciones) => {
@@ -320,113 +420,6 @@ function descontarDelPrimerPiso(){
 // ---------- Venta de habitaciones ---------- (PRUEBA)
 // habitacionTpl.vender() && habitacionesPorPiso[0].descontarDelPrimerPiso();
 
-// ---------- TWIN ----------
-let divTwin = document.getElementById("twin") 
-
-if(habitacionTwin.cantidad<=0){
-    divTwin.innerHTML=("No hay disponibilidad de habitaciones " + habitacionTwin.tipo + ".");
-}else {
-    divTwin.innerHTML=("Disponibilidad de habitación "+ habitacionTwin.tipo + " " + habitacionTwin.cantidad + " con una tarifa de $" + habitacionTwin.precio + " finales, hasta un máximo de " + habitacionTwin.maximoPersonas + " personas. Incluye el desayuno.<br>")
-}
-divTwin.innerHTML=(`
-    <div>
-        <img src="images/twin.jpg" alt="Habitación Twin">
-        <div>
-            <h4>Habitación TWIN</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>2 personas</li>
-                <li>2 Camas individuales</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
-// ---------- MAT ----------
-
-let divMat = document.getElementById("mat") 
-
-if(habitacionMat.cantidad<=0){
-    divMat.innerHTML=("No hay disponibilidad de habitaciones " + habitacionMat.tipo + ".");
-}else {
-    divMat.innerHTML=("Disponibilidad de habitación "+ habitacionMat.tipo + " " + habitacionMat.cantidad + " con una tarifa de $" + habitacionMat.precio + " finales, hasta un máximo de " + habitacionMat.maximoPersonas + " personas. Incluye el desayuno.<br>")
-}
-divMat.innerHTML=(`
-    <div>
-        <img src="images/mat.jpg" alt="Habitación matrimonial">
-        <div>
-            <h4>Habitación MAT</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>2 personas</li>
-                <li>1 Cama matrimonial</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
-// ---------- TPL ----------
-
-let divTpl = document.getElementById("tpl") 
-
-if(habitacionTpl.cantidad<=0){
-    divTpl.innerHTML=("No hay disponibilidad de habitaciones " + habitacionTpl.tipo + ".");
-}else {
-    divTpl.innerHTML=("Disponibilidad de habitación "+ habitacionTpl.tipo + " " + habitacionTpl.cantidad + " con una tarifa de $" + habitacionTpl.precio + " finales, hasta un máximo de " + habitacionTpl.maximoPersonas + " personas. Incluye el desayuno.<br>")
-}
-divTpl.innerHTML=(`
-    <div>
-        <img src="images/mat.jpg" alt="Habitación matrimonial">
-        <div>
-            <h4>Habitación TPL</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>3 personas</li>
-                <li>1 Cama matrimonial o 2 camas individuales + 1 cama individual</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
 // ---------- FUNCIONES ----------
 const salones = [
     {nombre: "Salón Dalí", precio: 50000, capacidad: 50},
@@ -462,3 +455,22 @@ const salonesEnum = {
 
 console.log(salonesEnum)
 // { '0': 'Juan', '1': 'Julieta', '2': 'Carlos', '3': 'Mariela' }
+
+
+// ------------------- Luxon -------------------
+
+const DateTime = luxon.DateTime
+
+const now = DateTime.now()
+console.log( now.toString() )
+
+const dt = DateTime.now();
+dt.year    //=> 2022
+dt.month   //=> 1
+dt.day     //=> 25
+dt.second  //=> 22
+dt.weekday //=> 2
+
+const dat = DateTime.now();
+console.log( dat.zoneName ) // America/Buenos_Aires
+console.log( dat.daysInMonth ) // 31
