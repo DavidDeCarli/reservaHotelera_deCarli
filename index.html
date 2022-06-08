@@ -28,11 +28,7 @@
     <title>Reserva Hotelera</title>
 </head>
 <body>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button>
-  
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -47,28 +43,38 @@
             <form>
                 <div class="form-group">
                   <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Ingrese el nombre">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Ingrese el nombre" required>
+                  <small id="emailHelp" class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
                     <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido">
+                    <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido" required>
                   </div>
                   <div class="form-group">
                     <label for="edad">Edad</label>
-                    <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad">
+                    <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad" required>
                   </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese un email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese un email" required>
+                    <small id="emailHelp" class="form-text text-muted"></small>
                   </div>
-                  <select id="tipo_habitacion" class="form-control">
+                  <select id="tipo_habitacion" class="form-control" required>
                     <option value="">Seleccione una opcion</option>
                     <option value="TWIN">Twin</option>
                     <option value="MAT">Matrimonial</option>
                     <option value="TPL">Triple</option>
                   </select>
+                  <div class="form-check">
+                    <input class="form-check-input mt-3" type="checkbox" value="" id="flexCheckChecked" required>
+                    <label class="form-check-label mt-2" for="flexCheckChecked">
+                      Acepta términos y condiciones
+                    </label>
+                  </div>
+                  <div class="form-group" style="display: none;">
+                    <label for="nombre">Quiere reservar otra habitación?</label>
+                    <input type="text" class="form-control" id="otraHabitacion" aria-describedby="emailHelp" placeholder="">
+                  </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -89,7 +95,7 @@
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <div class="collapse navbar-collapse" style="justify-content: space-between;" id="navbarNavDropdown">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="index.html">Home</a>
@@ -107,23 +113,39 @@
                                 <a class="nav-link active" href="pages/aboutus.html">About us</a>
                             </li>
                         </ul>
+                        <ul class="mb-0" style="color: white; list-style: none;">
+                            <li id="pais"></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
         </header>
         <main class="main">
-            <h1 id="titulo">Cyan Américas Towers Hotel</h1>
-            <h2 id="bienvenida">Bienvenido/a</h2>
-            <h2>Ingreso o búsqueda de huéspedes</h2>
+            <h1 id="titulo" class="text-center mt-5">Cyan Américas Towers Hotel</h1>
+            <h2 id="bienvenida" class="text-center mt-4">Bienvenido/a</h2>
             <div>
-                Está buscando un huésped?:
-                <input type="text" id="buscar">
-                <input type="button" id="buscador" value="Buscador"> 
-                <br>      
-                Registrar huésped:
-                <input type="text" id="ingresar">
+                <h2 class="mt-5 mb-4 text-center">Ingreso o búsqueda de huéspedes</h2>
+                <div style="display: flex; justify-content: center;">
+                    <p class="mb-0" style="align-self: center;">Está buscando un huésped?:</p>
+                    <input class="form-control" type="text" id="buscar" style="width: 30vw;">
+                    <input class="btn btn-primary" type="button" id="buscador" value="Buscador">
+                </div>
                 <br>
-                <input type="button" id="guardar" value="Guardar">
+                <div style="display: flex; justify-content: center;">
+                    <div style="display: none; width: 50vw;" id="alerta_danger" class="alert alert-danger text-center" role="alert">
+                    </div>
+                    <div style="display: none; width: 50vw;" id="alerta_success" class="alert alert-success text-center" role="alert">
+                    </div>
+                </div>
+                
+                <br>      
+                <!-- Button trigger modal -->
+                <div style="display: flex; justify-content: center;">
+                    <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Registrar huésped
+                    </button>
+                </div>
+                <br>
             </div>
             <div>
                 <img src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">

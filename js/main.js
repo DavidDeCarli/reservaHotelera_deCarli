@@ -1,6 +1,58 @@
 // promesa y libreria
-
+var total_registros = []
 var habitaciones;
+setTimeout(() => {
+    document.getElementById('buscador').addEventListener('click',()=>{
+        let buscar = document.getElementById('buscar').value;
+        let aux;
+        fetch('huespedes.json')
+            .then(function(res){
+                return res.json();
+            })
+            .then(function(data){
+                for (let i = 0; i < data.length; i++) {
+                    if(buscar==`${data[i].nombre} ${data[i].apellido}`){
+                        aux=true
+                        break;
+                    }else{aux=false}
+                }
+            })
+            .then(function(){
+                if(aux){
+                    document.getElementById('alerta_success').textContent = 'Se encontró nombre';
+                    document.getElementById('alerta_success').style.display = 'block';
+                    document.getElementById('alerta_danger').style.display = 'none';
+                    console.log('Se encontró el nombre')
+
+                }else if(total_registros.length != 0){
+                        for (let i = 0; i < total_registros.length; i++) {
+                            if(buscar==`${total_registros[i].nombre} ${total_registros[i].apellido}`){
+                                aux=true
+                                break;
+                            }else{aux=false}
+                        }
+                        if(aux){
+                            document.getElementById('alerta_success').textContent = 'Se encontró nombre';
+                            document.getElementById('alerta_success').style.display = 'block';
+                            document.getElementById('alerta_danger').style.display = 'none';
+                            console.log('Se encontró el nombre')
+                        }else{
+                            document.getElementById('alerta_danger').textContent = 'No se encontró nombre';
+                            document.getElementById('alerta_danger').style.display = 'block';
+                            document.getElementById('alerta_success').style.display = 'none';
+                            console.log('No se encontró el nombre')}
+                    }          
+                else{
+                    document.getElementById('alerta_danger').textContent = 'No se encontró nombre';
+                    document.getElementById('alerta_danger').style.display = 'block';
+                    document.getElementById('alerta_success').style.display = 'none';
+                    console.log('No se encontró el nombre')}
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+    })
+}, 2000);
 
 (async() => {
     const {value: pais} = await Swal.fire({
@@ -23,13 +75,13 @@ var habitaciones;
         inputPlaceholder: "País",
         inputValue: "",
         inputOptions: {
-            argentina: "Argentina",
-            mexico: "México",
-            españa: "España",
-            peru: "Perú",
-            uruguay: "Uruguay",
-            brasil: "Brasil",
-            bolivia: "Bolivia"
+            Argentina: "Argentina",
+            Mexico: "México",
+            España: "España",
+            Peru: "Perú",
+            Uruguay: "Uruguay",
+            Brasil: "Brasil",
+            Bolivia: "Bolivia"
         },
         showConfirmButton: true,
         confirmButtonColor: "#3E60E9",
@@ -52,8 +104,9 @@ var habitaciones;
         Swal.fire({
             title: `Seleccionaste ${pais}`
         });
+        document.getElementById("pais").textContent=pais
     }
-} )()
+} )
 
 // publicidad
 
@@ -112,7 +165,7 @@ document.getElementById("guardar").addEventListener("click",()=>{
     let disponibilidad = 0;
     let precio = 0;
     let cantidad_personas = 0;
-    let mayorEdad = (miEdad >= 18) ? alert("Sos mayor de edad, podes reservar sin problemas") : (alert("No eres mayor de edad no puedes hacer una reserva") && window.stop());
+    let mayorEdad = (miEdad >= 18) ? Swal.fire("Sos mayor de edad, podes reservar sin problemas") : (Swal.fire("No eres mayor de edad no puedes hacer una reserva") && window.stop());
     function saludar(){
         if ((nombre == null) || (nombre != confirm))
         document.getElementById("bienvenida").innerHTML ="Bienvenido/a";
@@ -121,6 +174,14 @@ document.getElementById("guardar").addEventListener("click",()=>{
     }
 
     saludar();
+    const nuevo_registro = {
+        "nombre": document.getElementById("nombre").value,
+        "apellido": document.getElementById("apellido").value,
+        "edad": document.getElementById("edad").value,
+        "email": document.getElementById("email").value,
+        "tipo_habitacion": document.getElementById("tipo_habitacion").value
+    }
+    total_registros.push(nuevo_registro)
     switch(tipo_habitaciones){
         case "TWIN" : precio = 6200; disponibilidad = 50; cantidad_personas=2; break;
         case "MAT" : precio = 6500; disponibilidad = 40; cantidad_personas=2; break;
@@ -129,8 +190,10 @@ document.getElementById("guardar").addEventListener("click",()=>{
 habitaciones = new habitacion(tipo_habitaciones,disponibilidad,precio,cantidad_personas)
 console.dir(habitaciones)
 
-do{
-    respuesta = prompt("Que tipo de habitación busca? MAT, TWIN o TPL");
+habitaciones.sumaIva()
+
+
+    respuesta = document.getElementById('tipo_habitacion').value;
     if(respuesta == "MAT"){
         cantidadMAT++;
         if(habitaciones.cantidad<=0){
@@ -138,7 +201,7 @@ do{
         }else {
             habitaciones.vender();
         }
-        respuesta = confirm("Quiere reservar otra habitación?")
+        document.getElementById("otraHabitacion").style.display='block';
     }else if(respuesta == "TWIN"){
         cantidadTWIN++;
         if(habitaciones.cantidad<=0){
@@ -146,7 +209,7 @@ do{
         }else {
             habitaciones.vender();
         }
-        respuesta = confirm("Quiere reservar otra habitación?")
+        document.getElementById("otraHabitacion").style.display='block';
     }else if(respuesta == "TPL"){
         cantidadTPL++;
         if(habitaciones.cantidad<=0){
@@ -154,11 +217,8 @@ do{
         }else {
             habitaciones.vender();
         }
-        respuesta = confirm("Quiere reservar otra habitación?")
-    }else if((respuesta !== "MAT" || "TWIN" || "TPL" ) && (respuesta !== null)){
-        (alert("Favor de ingresar 'MAT', 'TWIN' o 'TPL' o selecione la opción de 'Cancelar' para salir."))
+        document.getElementById("otraHabitacion").style.display='block';
     }
-}while(respuesta); 
 
 alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
 alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
@@ -272,6 +332,9 @@ divTpl.innerHTML=(`
     </div>
 `)
 
+
+//guardar registros
+
 })
 
 // Registro o buscador de huespedes
@@ -289,12 +352,12 @@ function guardar(evt) {
     document.getElementById('ingresar').value='';
 }
 
-function recuperar(evt) {
-    if (localStorage.getItem(document.getElementById('buscar').value) == null) 
-        alert('No está almacenala la palabra '+document.getElementById('buscar').value);
-    else  
-        document.getElementById('ingresar').value=localStorage.getItem(document.getElementById('buscar').value);
-}
+// function recuperar(evt) {
+//     if (localStorage.getItem(document.getElementById('buscar').value) == null) 
+//         alert('No está almacenala la palabra '+document.getElementById('buscar').value);
+//     else  
+//         document.getElementById('ingresar').value=localStorage.getItem(document.getElementById('buscar').value);
+// }
 
 // Reservando una habitación
 
