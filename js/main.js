@@ -1,6 +1,36 @@
 // promesa y libreria
 var total_registros = []
 var habitaciones;
+
+// Modal inicio paises
+
+document.getElementById("mostrar_paises").click();
+
+document.getElementById('cerra_pais').addEventListener('click',()=>{
+    document.getElementById("pais_modal").click()
+    document.getElementById("pais").textContent=document.getElementById("seleccionar_pais").value
+})
+
+// cantidad de reservaciones
+
+var cantidad_habitaciones = 95
+var habitaciones_ocupadas = 3
+var total_habitaciones = 0
+
+
+// buscador
+fetch('huespedes.json')
+            .then(function(res){
+                return res.json();
+            })
+            .then(function(data){
+                for (let i = 0; i < data.length; i++) {
+                const li = document.createElement("li")
+                const div = document.getElementById("cargar_nombres")
+                li.textContent=`${data[i].nombre} ${data[i].apellido}`
+                div.appendChild(li)}
+            })
+
 setTimeout(() => {
     document.getElementById('buscador').addEventListener('click',()=>{
         let buscar = document.getElementById('buscar').value;
@@ -54,112 +84,13 @@ setTimeout(() => {
     })
 }, 2000);
 
-(async() => {
-    const {value: pais} = await Swal.fire({
-        title: "Bienvenido!",
-        text: "Selecciona tu nacionalidad: ",
-        icon: "Success", // "error", "warning", "info", "question"
-        confirmButtonText: "Seleccionar",
-        footer: '<span class="rojo">Selecciona tu nacionalidad para poder continuar!',
-        width: "80%",
-        padding: "1rem",
-        grow: "row", // "fullscreen", "column"
-        backdrop: true,
-        toast: false,
-        position: "center",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        stopKeydownPropagation: false,
-        input: "select",
-        inputPlaceholder: "País",
-        inputValue: "",
-        inputOptions: {
-            Argentina: "Argentina",
-            Mexico: "México",
-            España: "España",
-            Peru: "Perú",
-            Uruguay: "Uruguay",
-            Brasil: "Brasil",
-            Bolivia: "Bolivia"
-        },
-        showConfirmButton: true,
-        confirmButtonColor: "#3E60E9",
-        confirmButtonAriaLabel: "Confirmar",
-
-        showCancelButton: false,
-        cancelButtonText: "Cancelar",
-        cancelButtonColor: "",
-        cancelButtonAriaLabel: "Cancelar",
-
-        buttonsStyling: true,
-        showCloseButton: true,
-        cloaseButtonAriaLabel: "Cerrar Alerta",
-
-        imageUrl: "images/cyan_logo.png",
-        imageWidth: "120px",
-        imageAlt: "Logo de Hoteles Cyan"
-    });
-    if(pais){
-        Swal.fire({
-            title: `Seleccionaste ${pais}`
-        });
-        document.getElementById("pais").textContent=pais
-    }
-} )
-
-// publicidad
-
-// Swal.fire({
-//     title: "reserva tu Hotel",
-//     html: "<a href='index.html' class='boton'>Reservar ahora</a>",
-//     icon: undefined,
-//     footer: "Anuncio",
-//     width: "300px",
-//     padding: "1rem",
-//     background: "#fff",
-//     grow: false,
-//     backdrop: false,
-//     timer: 20000,
-//     timerProgressBar: true,
-//     toast: false,
-//     position: "bottom-end",
-//     allowOutsideClick: false,
-//     allowEscapeKey: false,
-//     stopKeydownPropagation: false,
-//     showConfirmButton: false,
-//     showCancelButton: true,
-//     cloaseButtonAriaLabel: "Cerrar anuncio",
-//     imageUrl: "images/hotelCyan.png",
-//     imageWidth: "100%",
-//     imageAlt: "Vista de la entrada del hotel"
-// });
-
-// Terminos y condiciones
-
-// Swal.fire({
-//     html: "Por favor acepte nuestros <a href='#' class='boton'>Términos y condiciones</a>",
-//     confirmButtonText: "Acepto",
-//     icon: "info",
-//     padding: "1rem",
-//     backdrop: true,
-//     toast: true,
-//     position: "bottom",
-//     allowOutsideClick: false,
-//     allowEscapeKey: false,
-//     stopKeydownPropagation: false,
-//     showConfirmButton: true,
-//     showCancelButton: false,
-//     cloaseButtonAriaLabel: "Cerrar ésta alerta",
-//     customClass:{
-//          content: "contentClass"
-//     }
-// });
-
 // Operador Ternario
-document.getElementById("guardar").addEventListener("click",()=>{
+document.getElementById("guardar").addEventListener("click",guardar_click)
+
+function guardar_click(){
     let miEdad = document.getElementById("edad").value;
     let nombre = document.getElementById("nombre").value;
+    let apellido = document.getElementById("apellido").value;
     var tipo_habitaciones = document.getElementById("tipo_habitacion").value;
     console.log(tipo_habitaciones)
     let disponibilidad = 0;
@@ -172,6 +103,18 @@ document.getElementById("guardar").addEventListener("click",()=>{
         else(nombre !=null)
         document.getElementById("bienvenida").innerHTML ="Bienvenido/a " + nombre;
     }
+
+    // registro persona
+    habitaciones_ocupadas += 1 
+    total_habitaciones = (habitaciones_ocupadas * cantidad_habitaciones)/100
+    document.getElementById("disponibilidadGeneral").textContent="Total de habitaciones disponibles en el hotel: " + (cantidad_habitaciones - habitaciones_ocupadas) + " (" + (100-total_habitaciones) + "% de disponibilidad)"
+
+    // agregar a la lista
+
+    const li = document.createElement("li")
+    const div = document.getElementById("cargar_nombres")
+    li.textContent=`${nombre} ${apellido}`
+    div.appendChild(li)
 
     saludar();
     const nuevo_registro = {
@@ -220,120 +163,37 @@ habitaciones.sumaIva()
         document.getElementById("otraHabitacion").style.display='block';
     }
 
-alert(`Usted reservó ${cantidadMAT} habitaciones Mat.`)
-alert(`Usted reservó ${cantidadTWIN} habitaciones Twin.`)
-alert(`Usted reservó ${cantidadTPL} habitaciones Tpl.`)
-alert("El importe total a abonar es de $" + ((cantidadMAT * habitaciones.precio) + (cantidadTWIN * habitaciones.precio) + (cantidadTPL * habitaciones.precio) + " finales con iva incluido."))
+document.getElementById("alert_primary").style.display="block"
+document.getElementById("alert_primary").innerHTML=`
+Usted reservó ${cantidadMAT} habitaciones Mat. <br>
+Reservó ${cantidadTWIN} habitaciones Twin. <br>
+Reservó ${cantidadTPL} habitaciones Tpl. <br>
+El importe total a abonar es de $${(cantidadMAT * habitaciones.precio) + (cantidadTWIN * habitaciones.precio) + (cantidadTPL * habitaciones.precio)} finales con iva incluido.`
 
-// ---------- TWIN ----------
-let divTwin = document.getElementById("twin") 
+// calcular cuotas
+const monto = document.getElementById("importe");
+const tiempo = document.getElementById("cuotas");
+const interes = "1.2";
 
-if(habitaciones.cantidad<=0){
-    divTwin.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
-}else {
-    divTwin.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
+calcularCuota(Number(monto.value), Number(interes), Number(tiempo.value));
+console.log("monto: " + Number(monto.value))
+console.log("interes: " + Number(interes))
+console.log("tiempo: " + Number(tiempo.value))
+document.getElementById("lista-tabla").style.display="inline-table"
 }
-divTwin.innerHTML=(`
-    <div>
-        <img src="images/twin.jpg" alt="Habitación Twin">
-        <div>
-            <h4>Habitación TWIN</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>2 personas</li>
-                <li>2 Camas individuales</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
 
-// ---------- MAT ----------
+document.getElementById("tipo_habitacion").addEventListener("click",()=>{
+    var tipo_habitaciones = document.getElementById("tipo_habitacion").value;
+    switch(tipo_habitaciones){
+        case "TWIN" : precio = 6200; disponibilidad = 50; cantidad_personas=2; break;
+        case "MAT" : precio = 6500; disponibilidad = 40; cantidad_personas=2; break;
+        case "TPL" : precio = 7500; disponibilidad = 5; cantidad_personas=3; break;
+    }
+    habitaciones = new habitacion(tipo_habitaciones,disponibilidad,precio,cantidad_personas)
+    console.dir(habitaciones)
 
-let divMat = document.getElementById("mat") 
-
-if(habitaciones.cantidad<=0){
-    divMat.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
-}else {
-    divMat.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
-}
-divMat.innerHTML=(`
-    <div>
-        <img src="images/mat.jpg" alt="Habitación matrimonial">
-        <div>
-            <h4>Habitación MAT</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>2 personas</li>
-                <li>1 Cama matrimonial</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
-// ---------- TPL ----------
-
-let divTpl = document.getElementById("tpl") 
-
-if(habitaciones.cantidad<=0){
-    divTpl.innerHTML=("No hay disponibilidad de habitaciones " + habitaciones.tipo + ".");
-}else {
-    divTpl.innerHTML=("Disponibilidad de habitación "+ habitaciones.tipo + " " + habitaciones.cantidad + " con una tarifa de $" + habitaciones.precio + " finales, hasta un máximo de " + habitaciones.maximoPersonas + " personas. Incluye el desayuno.<br>")
-}
-divTpl.innerHTML=(`
-    <div>
-        <img src="images/mat.jpg" alt="Habitación matrimonial">
-        <div>
-            <h4>Habitación TPL</h4>
-            <h5>Información de la habitación</h5>
-            <ul>
-                <li>3 personas</li>
-                <li>1 Cama matrimonial o 2 camas individuales + 1 cama individual</li>
-                <li>30 m2 / 323 ft2</li>
-            </ul>
-            <h5>Servicios de la habitación</h5>
-            <ul>
-                <li>Aire Acondicionado</li>
-                <li>Bañera</li>
-                <li>Escritorio</li>
-                <li>Secador de Pelo</li>
-                <li>Ducha</li>
-                <li>Teléfono</li>
-                <li>Televisión</li>
-                <li>Wi-Fi</li>
-            </ul>
-            <a href="https://reservations.cyanhoteles.com.ar/106758?adults=2&children=0&currency=ARS&datein=05/13/2022&gdp=hotelfinder&hotelID=106758&languageid=2&nights=2&rateplanID=2914198&roomtypeID=444164&subchan=GOOGLE_AR_desktop_CPA&utm_campaign=ds_9090959734&utm_content=HPA_106758_localuniversal_2_AR_desktop_2022-05-13_default_9090959734__standard&utm_medium=meta&utm_source=googleha#/accommodation/room" class="btn btn-primary">Reservar</a>
-        </div>
-    </div>
-`)
-
-
-//guardar registros
+    habitaciones.sumaIva()
+    document.getElementById("importe").value = habitaciones.precio;
 
 })
 
@@ -351,13 +211,6 @@ function guardar(evt) {
     document.getElementById('buscar').value='';
     document.getElementById('ingresar').value='';
 }
-
-// function recuperar(evt) {
-//     if (localStorage.getItem(document.getElementById('buscar').value) == null) 
-//         alert('No está almacenala la palabra '+document.getElementById('buscar').value);
-//     else  
-//         document.getElementById('ingresar').value=localStorage.getItem(document.getElementById('buscar').value);
-// }
 
 // Reservando una habitación
 
@@ -383,17 +236,9 @@ class habitacion{
 }
 
 
-// Evento //
+// Evento Calcular cuota//
 
-const monto = document.getElementById("monto");
-const tiempo = document.getElementById("tiempo");
-const interes = document.getElementById("interes");
-const btnCalcular = document.getElementById("btnCalcular");
-const llenarTabla = document.querySelector("#lista-tabla tbody");
-
-btnCalcular.addEventListener("click", () => {
-    calcularCuota(monto.value, interes.value, tiempo.value);
-})
+var llenarTabla = document.querySelector("#lista-tabla tbody");
 
 function calcularCuota(monto, interes, tiempo){
     while(llenarTabla.firstChild){
@@ -407,6 +252,7 @@ function calcularCuota(monto, interes, tiempo){
     let pagoInteres=0, pagoCapital =0, cuota=0;
 
     cuota = monto * (Math.pow(1+interes/100, tiempo)*interes/100)/(Math.pow(1+interes/100, tiempo)-1);
+    console.log(cuota)
 
     for (let i=1; i<= tiempo; i++){
         pagoInteres = parseFloat(monto*(interes/100));
@@ -441,48 +287,6 @@ let cantidadMAT = 0;
 let cantidadTWIN = 0;
 let cantidadTPL = 0;
 
-// Habitaciones por piso
-const habitacionesPorPiso = [10,10,10,10,10,10,10,10,10,5]
-habitacionesPorPiso.forEach((habitaciones) => {
-    console.log("Total de habitaciones: " + habitaciones)
-})
-
-let habitacionesTotales = habitacionesPorPiso[0]+ habitacionesPorPiso[1] + habitacionesPorPiso[2] + habitacionesPorPiso[3] + habitacionesPorPiso[4] + habitacionesPorPiso[5] + habitacionesPorPiso[6] + habitacionesPorPiso[7] + habitacionesPorPiso[8] + habitacionesPorPiso[9];
-
-function calcularPorcentaje() {
-    return habitacionesTotales / habitacionesTotales * 100; //corregir
-}
-
-let disponibilidadEnGeneral = document.getElementById("disponibilidadGeneral") 
-
-if(habitacionesTotales<=0){
-    disponibilidadEnGeneral.innerHTML=("No hay disponibilidad de habitaciones en el hotel.");
-}else {
-    disponibilidadEnGeneral.innerHTML=("Total de habitaciones disponibles en el hotel: " + habitacionesTotales + " (" + calcularPorcentaje() + "% de disponibilidad)<br>" + 
-    "Disponibilidad de habitaciones en el 1er piso: "+ habitacionesPorPiso[0] + "<br>" + 
-    "Disponibilidad de habitaciones en el 2do piso: "+ habitacionesPorPiso[1] + "<br>" + 
-    "Disponibilidad de habitaciones en el 3er piso: "+ habitacionesPorPiso[2] + "<br>" + 
-    "Disponibilidad de habitaciones en el 4to piso: "+ habitacionesPorPiso[3] + "<br>" + 
-    "Disponibilidad de habitaciones en el 5to piso: "+ habitacionesPorPiso[4] + "<br>" + 
-    "Disponibilidad de habitaciones en el 6to piso: "+ habitacionesPorPiso[5] + "<br>" + 
-    "Disponibilidad de habitaciones en el 7to piso: "+ habitacionesPorPiso[6] + "<br>" + 
-    "Disponibilidad de habitaciones en el 8vo piso: "+ habitacionesPorPiso[7] + "<br>" + 
-    "Disponibilidad de habitaciones en el 9no piso: "+ habitacionesPorPiso[8] + "<br>" + 
-    "Disponibilidad de habitaciones en el 10mo piso: "+ habitacionesPorPiso[9] + "<br>"
-    )
-}
-
-function descontarDelPrimerPiso(){
-    if(habitacionesPorPiso[0]<=0){
-        console.log("No quedan habitaciones en éste piso.");
-    }else {
-        habitacionesPorPiso[0] = habitacionesPorPiso[0] -1;
-    }
-}
-
-// ---------- Venta de habitaciones ---------- (PRUEBA)
-// habitacionTpl.vender() && habitacionesPorPiso[0].descontarDelPrimerPiso();
-
 // ---------- FUNCIONES ----------
 const salones = [
     {nombre: "Salón Dalí", precio: 50000, capacidad: 50},
@@ -495,7 +299,7 @@ const resultado3 = salones.find((buscar) => buscar.nombre==="Salón Dalí")
 const resultado4 = salones.filter((buscar) => buscar.nombre.includes("Salón Picasso"))
 const resultado5 = salones.map((busqueda) => busqueda.nombre)
 
-console.log("Resultado de la búsqueda: " + JSON.stringify(resultado)) //se convirtio un objeto en string para agregarlo a la cadena
+console.log("Resultado de la búsqueda: " + JSON.stringify(resultado))
 console.log(resultado2)
 console.log(resultado3)
 console.log(resultado4)

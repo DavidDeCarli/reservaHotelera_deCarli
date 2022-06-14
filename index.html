@@ -28,13 +28,45 @@
     <title>Reserva Hotelera</title>
 </head>
 <body>
-
+<!-- Button trigger modal -->
+<button id="mostrar_paises" style="display: none;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#pais_modal">
+    Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="pais_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Selecciona tu nacionalidad</h5>
+          <button type="button" id="cerrar_pais" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p-0">
+        </div>
+        <select id="seleccionar_pais" class="custom-select my-4">
+            <option selected>Seleccione una opción</option>
+            <option class='sel_pais' value="Argentina">Argentina</option>
+            <option class='sel_pais' value="México">México</option>
+            <option class='sel_pais' value="España">España</option>
+            <option class='sel_pais' value="Perú">Perú</option>
+            <option class='sel_pais' value="Uruguay">Uruguay</option>
+            <option class='sel_pais' value="Brasil">Brasil</option>
+            <option class='sel_pais' value="Bolivia">Bolivia</option>
+          </select>
+          <div class="text-center">
+            <button id="cerra_pais" class="btn btn-primary mb-4">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Complete con sus datos</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -43,32 +75,43 @@
             <form>
                 <div class="form-group">
                   <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Ingrese el nombre" required>
+                  <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Ingrese el nombre">
                   <small id="emailHelp" class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
                     <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido" required>
-                  </div>
+                    <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido">
+                </div>
                   <div class="form-group">
                     <label for="edad">Edad</label>
-                    <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad" required>
+                    <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad">
                   </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese un email" required>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese un email">
                     <small id="emailHelp" class="form-text text-muted"></small>
                   </div>
-                  <select id="tipo_habitacion" class="form-control" required>
-                    <option value="">Seleccione una opcion</option>
-                    <option value="TWIN">Twin</option>
-                    <option value="MAT">Matrimonial</option>
-                    <option value="TPL">Triple</option>
-                  </select>
+                    <div class="form-group">
+                        <label for="tipo_habitacion">Tipo de habitacion</label>
+                        <select id="tipo_habitacion" class="form-control">
+                            <option value="">Seleccione una opcion</option>
+                            <option value="TWIN">Twin</option>
+                            <option value="MAT">Matrimonial</option>
+                            <option value="TPL">Triple</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="importe">Importe</label>
+                        <input type="text" class="form-control" id="importe" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="cuotas">Cuotas</label>
+                        <input type="text" class="form-control" id="cuotas" placeholder="Elija las cuotas">
+                      </div>
                   <div class="form-check">
-                    <input class="form-check-input mt-3" type="checkbox" value="" id="flexCheckChecked" required>
+                    <input class="form-check-input mt-3" type="checkbox" value="" id="flexCheckChecked">
                     <label class="form-check-label mt-2" for="flexCheckChecked">
-                      Acepta términos y condiciones
+                     <a href="https://www.revenueparahoteles.com/no-reembolsables-y-por-eso-inutiles/#:~:text=La%20tarifa%20no%20reembolsable%20tiene,no%20ser%C3%A1%20reembolsado%20del%20importe." target="_blank">Acepta términos y condiciones</a>
                     </label>
                   </div>
                   <div class="form-group" style="display: none;">
@@ -106,12 +149,6 @@
                             <li class="nav-item">
                                 <a class="nav-link active" href="pages/espaciosComunes.html">Espacios Comunes</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="pages/contacto.html">Contacto</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="pages/aboutus.html">About us</a>
-                            </li>
                         </ul>
                         <ul class="mb-0" style="color: white; list-style: none;">
                             <li id="pais"></li>
@@ -120,7 +157,7 @@
                 </div>
             </nav>
         </header>
-        <main class="main">
+        <main class="main text-center">
             <h1 id="titulo" class="text-center mt-5">Cyan Américas Towers Hotel</h1>
             <h2 id="bienvenida" class="text-center mt-4">Bienvenido/a</h2>
             <div>
@@ -146,37 +183,32 @@
                     </button>
                 </div>
                 <br>
+                <div style="display: flex; justify-content:center;">
+                    <div id="alert_primary" class="alert alert-primary" role="alert" style="width: 40vw; display: none;">
+                        This is a primary alert—check it out!
+                    </div>
+                </div>
+                <br>
             </div>
             <div>
-                <img src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">
-                <p id="disponibilidadGeneral"></p>
+                <img class="imagenPrincipal" src="images/CyanAmericasTowersHotel.png" alt="Entrada del hotel Cyan Américas Towers">
+                <p class="mt-4" id="disponibilidadGeneral"></p>
+                <p class="mt-4" style="width: 80%; margin-left: auto; margin-right: auto;">Cyan Americas Towers Hotel es un hotel 4 estrellas superior con una excelente ubicación en el barrio de Recoleta de Buenos Aires. Este hotel de 95 habitaciones combina la sofisticación del barrio de Recoleta, con la proximidad del centro financiero de CABA, así como las principales atracciones turísticas.</p>
+                <h2>Datos Generales</h2>
+                <p>El hotel se encuentra ubicado en la calle Libertad 1070, C1012, Buenos Aires <br>
+                    Reserva: 5031-2660 <br>
+                    info@hotelescyan.com
+                </p>
+                <p>Horario de check-in a partir de las 15hs.<br> 
+                    Horario de check-out 12:00hs.<br> 
+                    Desayuno desde las 06:30hs hasta las 10:30hs.
+                </p>
+                
             </div>
             <h2>Reserva tu habitación!</h2>
             <h3>Reservas</h3>
             <div>
-                <select id="list">
-                    <option value="6200">TWIN</option>
-                    <option value="6500">MAT</option>
-                    <option value="7500">TPL</option>
-                    <option value="50000">Salón Dalí</option>
-                    <option value="80000">Salón Picasso</option>
-                </select>
-                <br>
-                <br>
-                <input type="number" name="currency-field" id="monto" data-type="Monto" placeholder="$1,000,000" 
-                    autocomplete="off " min="0"> 
-                <br>
-                <br>    
-                <input type="number" name="currency-field" id="tiempo" placeholder="Meses" autocomplete="off " 
-                    min="0">
-                <br>
-                <br>
-                <input type="number" name="currency-field" id="interes" placeholder="Interes" autocomplete="off " 
-                    min="0">
-                <br>
-                <br>
-                <button type="submit" class="btn btn-primary" id="btnCalcular">Calcular</button>
-                    <table id="lista-tabla" class="table">
+                    <table id="lista-tabla" class="table" style="display: none;">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -190,11 +222,90 @@
                         </tbody>
                     </table>
             </div>
-            <div id="twin"></div>
-            <div id="mat"></div>
-            <div id="tpl"></div>
-            <div class="container">
-                <a href="#" id="jsonBtn" class="button">Cargar huéspedes</a>
+            <div id="twin">
+                <div>
+                    <img src="images/twin.jpg" alt="Habitación Twin">
+                    <div>
+                        <h4 class="mt-3">Habitación TWIN</h4>
+                        <h5>Información de la habitación</h5>
+                        <ul>
+                            <li>2 personas</li>
+                            <li>2 Camas individuales</li>
+                            <li>30 m2 / 323 ft2</li>
+                        </ul>
+                        <h5>Servicios de la habitación</h5>
+                        <ul>
+                            <li>Aire Acondicionado</li>
+                            <li>Bañera</li>
+                            <li>Escritorio</li>
+                            <li>Secador de Pelo</li>
+                            <li>Ducha</li>
+                            <li>Teléfono</li>
+                            <li>Televisión</li>
+                            <li>Wi-Fi</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary reservar1" data-toggle="modal" data-target="#exampleModal">Reservar</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4">
+            <div id="mat">
+                <div>
+                    <img src="images/mat.jpg" alt="Habitación matrimonial">
+                    <div>
+                        <h4 class="mt-3">Habitación MAT</h4>
+                        <h5>Información de la habitación</h5>
+                        <ul>
+                            <li>2 personas</li>
+                            <li>1 cama matrimonial</li>
+                            <li>30 m2 / 323 ft2</li>
+                        </ul>
+                        <h5>Servicios de la habitación</h5>
+                        <ul>
+                            <li>Aire Acondicionado</li>
+                            <li>Bañera</li>
+                            <li>Escritorio</li>
+                            <li>Secador de Pelo</li>
+                            <li>Ducha</li>
+                            <li>Teléfono</li>
+                            <li>Televisión</li>
+                            <li>Wi-Fi</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary reservar1" data-toggle="modal" data-target="#exampleModal">Reservar</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4">
+            <div id="tpl">
+                <div>
+                    <img src="images/mat.jpg" alt="Habitación matrimonial">
+                    <div>
+                        <h4 class="mt-3">Habitación TPL</h4>
+                        <h5>Información de la habitación</h5>
+                        <ul>
+                            <li>3 personas</li>
+                            <li>1 cama matrimonial o 2 camas individuales + 1 cama individual</li>
+                            <li>30 m2 / 323 ft2</li>
+                        </ul>
+                        <h5>Servicios de la habitación</h5>
+                        <ul>
+                            <li>Aire Acondicionado</li>
+                            <li>Bañera</li>
+                            <li>Escritorio</li>
+                            <li>Secador de Pelo</li>
+                            <li>Ducha</li>
+                            <li>Teléfono</li>
+                            <li>Televisión</li>
+                            <li>Wi-Fi</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary reservar1" data-toggle="modal" data-target="#exampleModal">Reservar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <h4>Listado de huéspedes</h4>
+            </div>
+            <div id="cargar_nombres" class="container">
             </div>
             <div class="container">
                 <div id="resultado"></div>            

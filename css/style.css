@@ -21,10 +21,23 @@
 
 .main {
     grid-area: main; 
+    text-align: center;
+}
+
+p{
+    font-size: 18px;
+}
+
+.imagenPrincipal{
+    width: 100%;
 }
 
 .container{
     margin-top: 10px;
+}
+
+li{
+    list-style: none;
 }
 
 .footer {
